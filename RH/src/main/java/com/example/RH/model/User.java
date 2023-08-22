@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Generated;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +12,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
+@NamedQuery(name="User.getAllUser",query="select new com.example.RH.wrapper.UserWrapper(u.id,u.firstName,u.lastName,u.email,u.status) from User u where u.role ='COLLABORATEUR'")
+@NamedQuery(name="User.updateStatus",query="update User u set u.status=:status where u.id=:id")
+@NamedQuery(name="User.getAllAdmin",query="select u.email from User u where u.role ='ADMIN'")
+@NamedQuery(name="User.findByUserName",query="select u from User u where u.email =:email")
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -28,6 +31,7 @@ public class User implements UserDetails {
     private String lastName;
     private String email;
     private String password;
+    private String status;
     @Enumerated(EnumType.STRING)
     private Role role;
 

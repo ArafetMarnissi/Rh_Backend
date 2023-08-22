@@ -1,5 +1,6 @@
 package com.example.RH.config;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,6 +22,8 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    Claims claims = null;
+    private String username =null;
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
@@ -35,6 +38,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         jwt = authHeader.substring(7);
         userEmail = jwtService.extractUserName(jwt);
+        claims = jwtService.ExtractAllClaims(jwt);
+        username=userEmail;
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
             if (jwtService.isTokenValid(jwt,userDetails)){
@@ -49,5 +54,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request,response);
+    }
+
+
+    public boolean isAdmin(){
+        return "ADMIN".equalsIgnoreCase((String) claims.get("role"));
+    }
+    public boolean isCollaborateur(){
+        return "COLLABORATEUR".equalsIgnoreCase((String) claims.get("role"));
+    }
+    public String getCurrentUser(){
+        return username;
     }
 }

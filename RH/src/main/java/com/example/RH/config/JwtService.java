@@ -24,19 +24,21 @@ public class JwtService {
         final Claims claims = ExtractAllClaims(token);
         return claimsResolver.apply(claims);
     }
-    public String generateToken(UserDetails userDetails){
-        return generateToken(new HashMap<>(),userDetails);
+    public String generateToken(UserDetails userDetails,String role){
+        return generateToken(new HashMap<>(),userDetails,role);
     }
     public String generateToken(
             Map<String,Object> ExtraClaims,
-            UserDetails userDetails
+            UserDetails userDetails,
+            String role
     ){
+        ExtraClaims.put("role",role);
         return Jwts
                 .builder()
                 .setClaims(ExtraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 10000000 + 600 * 242 ))
+                .setExpiration(new Date(System.currentTimeMillis() + 10000000 ))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
 
