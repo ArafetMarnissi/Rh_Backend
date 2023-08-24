@@ -33,17 +33,19 @@ public class AttendanceController implements AttendanceControllerInt{
 
 //
             String typePointage = attendanceService.determinerTypePointage(heure);
-            if (Objects.equals(typePointage, "inconnu")){
-                return RhUtils.getResponseEntity("À ce moment, il n'est pas autorisé de faire une pointe.", HttpStatus.OK);
-            }else {
-            Attendance attendance = attendanceService.updateOrCreateAttendanceForToday(typePointage,heure);
-            attendanceRepository.save(attendance);
-            return RhUtils.getResponseEntity("pointage ajouté avec succés", HttpStatus.OK);
+            if (Objects.equals(typePointage, "inconnu")) {
+                return RhUtils.getResponseEntity("At this time, it is not allowed to make a check-in.", HttpStatus.OK);
+            } else {
+                Attendance attendance = attendanceService.updateOrCreateAttendanceForToday(typePointage, heure);
+                attendanceRepository.save(attendance);
+                return RhUtils.getResponseEntity("Check-in added with success", HttpStatus.OK);
             }
+        } catch (RuntimeException ex) {
+                return RhUtils.getResponseEntity("You have already checked-in", HttpStatus.OK);
         }catch (Exception ex){
             ex.printStackTrace();
         }
-        return RhUtils.getResponseEntity("something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+        return RhUtils.getResponseEntity("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override

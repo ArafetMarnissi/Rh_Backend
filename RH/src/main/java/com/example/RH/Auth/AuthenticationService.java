@@ -80,7 +80,7 @@ public ResponseEntity<String> register(RegisterRequest request) {
                        .lastName(request.getLastName())
                        .email(request.getEmail())
                        .password(passwordEncoder.encode(request.getPassword()))
-                       .status("true")
+                       .status("false")
                        .role(Role.COLLABORATEUR)
                        .build();
                userRepository.save(user);

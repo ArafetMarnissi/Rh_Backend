@@ -13,6 +13,8 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 @NamedQuery(name="User.getAllUser",query="select new com.example.RH.wrapper.UserWrapper(u.id,u.firstName,u.lastName,u.email,u.status) from User u where u.role ='COLLABORATEUR'")
+@NamedQuery(name="User.getUserById",query="select new com.example.RH.wrapper.UserWrapper(u.id,u.firstName,u.lastName,u.email,u.status) from User u where u.id =:id")
+
 @NamedQuery(name="User.updateStatus",query="update User u set u.status=:status where u.id=:id")
 @NamedQuery(name="User.getAllAdmin",query="select u.email from User u where u.role ='ADMIN'")
 @NamedQuery(name="User.findByUserName",query="select u from User u where u.email =:email")

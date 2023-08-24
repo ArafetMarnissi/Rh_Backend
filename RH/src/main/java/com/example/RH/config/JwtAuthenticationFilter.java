@@ -66,4 +66,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public String getCurrentUser(){
         return username;
     }
+  /*  public String getToken(@NonNull HttpServletRequest request,
+                           @NonNull HttpServletResponse response,
+                           @NonNull FilterChain filterChain
+    ) throws ServletException, IOException {
+        final String authHeader = request.getHeader("Authorization");
+        final String jwt;
+        final String userEmail;
+        if (authHeader == null ||!authHeader.startsWith("Bearer ")){
+            filterChain.doFilter(request, response);
+            return null;
+        }
+        jwt = authHeader.substring(7);
+        return jwt;
+    }*/
+  public String getToken(HttpServletRequest request) {
+      final String authHeader = request.getHeader("Authorization");
+
+      if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+          return null; // Return null when no valid token is found
+      }
+
+      return authHeader.substring(7); // Extract the token after "Bearer "
+  }
+
 }

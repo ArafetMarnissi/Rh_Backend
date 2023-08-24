@@ -3,6 +3,7 @@ package com.example.RH.controller;
 import com.example.RH.service.UserService;
 import com.example.RH.utils.RhUtils;
 import com.example.RH.wrapper.UserWrapper;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,13 +32,50 @@ private final UserService userService;
     }
 
     @Override
+    public ResponseEntity<UserWrapper> getUserById(Integer userId) {
+        if (userId!=null){
+        try {
+            return userService.getUserById(userId);
+        }catch (RuntimeException ex){
+            return new ResponseEntity<>(new UserWrapper(), HttpStatus.NOT_FOUND);
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        }else {
+            return new ResponseEntity<>(new UserWrapper(), HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(new UserWrapper(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<UserWrapper> getCurrentUser() {
+        try{
+            return userService.getCurrentUser();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return new ResponseEntity<>(new UserWrapper(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
     public ResponseEntity<String> update(Map<String, String> requestMap) {
         try {
             return userService.update(requestMap);
         }catch (Exception ex){
             ex.printStackTrace();
         }
-        return RhUtils.getResponseEntity("something went wrong",HttpStatus.INTERNAL_SERVER_ERROR);
+        return RhUtils.getResponseEntity("Something went wrong",HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<String> updateProfile(Map<String, String> requestMap) {
+        try {
+            return userService.updateProfile(requestMap);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return RhUtils.getResponseEntity("Something went wrong",HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
@@ -47,7 +85,7 @@ private final UserService userService;
         }catch (Exception ex){
             ex.printStackTrace();
         }
-        return RhUtils.getResponseEntity("something went wrong", HttpStatus.INTERNAL_SERVER_ERROR );
+        return RhUtils.getResponseEntity("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR );
 
     }
 
@@ -58,7 +96,17 @@ private final UserService userService;
         }catch (Exception ex){
             ex.printStackTrace();
         }
-        return RhUtils.getResponseEntity("something went wrong", HttpStatus.INTERNAL_SERVER_ERROR );
+        return RhUtils.getResponseEntity("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR );
+    }
+
+    @Override
+    public ResponseEntity<String> CreateNewPassword(Map<String, String> requestMap, HttpServletRequest request) {
+        try {
+            return userService.createNewPassword(requestMap,request);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return RhUtils.getResponseEntity("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR );
     }
 
     @Override
@@ -68,6 +116,6 @@ private final UserService userService;
         }catch (Exception ex){
             ex.printStackTrace();
         }
-        return RhUtils.getResponseEntity("something went wrong", HttpStatus.INTERNAL_SERVER_ERROR );
+        return RhUtils.getResponseEntity("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR );
     }
 }

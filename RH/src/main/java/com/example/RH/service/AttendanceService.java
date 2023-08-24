@@ -55,18 +55,30 @@ public class AttendanceService {
                    case "matin":
                        if (attendanceToUpdate.getHeureMatin()== null)
                        attendanceToUpdate.setHeureMatin(heure);
+                       else {
+                           throw new RuntimeException("You have already checked-in");
+                       }
                        break;
                    case "après-midi":
                        if (attendanceToUpdate.getHeureApresMidi()== null)
                        attendanceToUpdate.setHeureApresMidi(heure);
+                       else {
+                           throw new RuntimeException("You have already checked-in");
+                       }
                        break;
                    case "retour":
                        if (attendanceToUpdate.getHeureRetour()== null)
                        attendanceToUpdate.setHeureRetour(heure);
+                       else {
+                           throw new RuntimeException("You have already checked-in");
+                       }
                        break;
                    case "départ":
                        if (attendanceToUpdate.getHeureDepart()== null)
                        attendanceToUpdate.setHeureDepart(heure);
+                       else {
+                           throw new RuntimeException("You have already checked-in");
+                       }
                        break;
                    case "inconnu":
                        break;

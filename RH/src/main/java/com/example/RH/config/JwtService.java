@@ -48,7 +48,7 @@ public class JwtService {
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
@@ -69,4 +69,30 @@ public class JwtService {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+    public String generateTokenWithValidaity(
+            Map<String,Object> ExtraClaims,
+            UserDetails userDetails,
+            Integer validity
+    ){
+
+        return Jwts
+                .builder()
+                .setClaims(ExtraClaims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + validity ))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+
+    }
+
+    public String invalidateToken(String token) {
+        Claims claims = ExtractAllClaims(token);
+        claims.setExpiration(new Date(System.currentTimeMillis() - 1000)); // Set expiration to a past date
+        return Jwts.builder()
+                .setClaims(claims)
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
 }

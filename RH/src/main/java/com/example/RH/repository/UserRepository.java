@@ -21,5 +21,5 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     Integer updateStatus(@Param("status") String status,@Param("id") Integer id);
 
 
-
+    UserWrapper getUserById(@Param("id") Integer userId);
 }

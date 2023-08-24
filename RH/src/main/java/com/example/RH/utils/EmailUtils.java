@@ -34,13 +34,13 @@ public class EmailUtils {
         }
         return cc;
     }
-    public void forgotMail(String to,String subject ,String password) throws MessagingException{
+    public void forgotMail(String to,String subject ,String token) throws MessagingException{
         MimeMessage message = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message,true);
         helper.setFrom("marnissiarafet@gmail.com");
         helper.setTo(to);
         helper.setSubject(subject);
-        String htmlMsg = "<p><b>Your Login details for Rh System</b><br><b>Email: </b> " + to + " <br><b>Password: </b> " + password + "<br><a href=\"http://localhost:4200/\">Click here to login</a></p>";
+        String htmlMsg = "<p><b>Your rest password link for Rh System</b><br><b>Email: </b> " + to +  "<br><a href=\"http://localhost:4200/createnewPassword?token="+token+"\">"+"Click here to login</a></p><br><h4>this link is valid only for 5 min</h4>";
         message.setContent(htmlMsg,"text/html");
         emailSender.send(message);
     }
