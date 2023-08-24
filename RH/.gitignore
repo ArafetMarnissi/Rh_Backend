@@ -31,5 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
-application.properties
+RH/src/main/resources/application.properties
 RH/src/main/java/com/example/RH/utils/EmailUtils.java
