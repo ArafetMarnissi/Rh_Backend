@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-public interface AttendanceRepository extends JpaRepository<Attendance,Long> {
+public interface AttendanceRepository extends JpaRepository<Attendance,Integer> {
     Optional<Attendance> findByDatePointageAndCollaborateur(LocalDate today, User collaborateur);
 
     List<AttendanceWrapper> getAllAttendance();

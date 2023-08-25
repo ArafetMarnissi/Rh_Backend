@@ -5,6 +5,7 @@ import com.example.RH.model.Attendance;
 import com.example.RH.model.User;
 import com.example.RH.repository.AttendanceRepository;
 import com.example.RH.repository.UserRepository;
+import com.example.RH.utils.RhUtils;
 import com.example.RH.wrapper.AttendanceWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -174,4 +175,27 @@ public class AttendanceService {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    public ResponseEntity<String> EditAttendance(Map<String, String> requestMap) {
+        try {
+            if(jwtAuthenticationFilter.isAdmin()) {
+                Optional<Attendance> attendance = attendanceRepository.findById(Integer.parseInt(requestMap.get("id")));
+                if (attendance.isPresent()){
+
+                    attendance.get().setHeureMatin(LocalTime.parse(requestMap.get("HeureMatin")));
+                    attendance.get().setHeureApresMidi(LocalTime.parse(requestMap.get("HeureApresMidi")));
+                    attendance.get().setHeureRetour(LocalTime.parse(requestMap.get("HeureRetour")));
+                    attendance.get().setHeureDepart(LocalTime.parse(requestMap.get("HeureDepart")));
+                    attendanceRepository.save(attendance.get());
+                    return RhUtils.getResponseEntity("Check-in updated seccessfuly",HttpStatus.OK);
+                }
+
+            }else {
+                return new ResponseEntity<>("Unauthorized",HttpStatus.UNAUTHORIZED);
+            }
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return RhUtils.getResponseEntity("Something went wrong !",HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
+

@@ -87,4 +87,14 @@ public class AttendanceController implements AttendanceControllerInt{
         }
         return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Override
+    public ResponseEntity<String> EditPointage(Map<String, String> requestMap) {
+        try {
+            return attendanceService.EditAttendance(requestMap);
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return RhUtils.getResponseEntity("Something went wrong",HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

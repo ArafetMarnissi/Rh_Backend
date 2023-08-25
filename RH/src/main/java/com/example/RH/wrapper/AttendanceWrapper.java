@@ -10,7 +10,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Data
 public class AttendanceWrapper {
-    private Long id;
+    private Integer id;
     private String email;
     private String firstName;
 
@@ -20,7 +20,7 @@ public class AttendanceWrapper {
     private LocalTime heureRetour;
     private LocalTime heureDepart;
 
-    public AttendanceWrapper(Long id,
+    public AttendanceWrapper(Integer id,
                              String email,
                              String firstName,
                              LocalDate datePointage,

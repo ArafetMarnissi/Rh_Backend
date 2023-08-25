@@ -20,5 +20,6 @@ public interface AttendanceControllerInt {
     public ResponseEntity<List<AttendanceWrapper>> GetAllPointageAdminPerDate(@RequestParam(required = true) Map<String,String> requestMap);
     @GetMapping("/GetAllPointageUserPerDate")
     public ResponseEntity<List<AttendanceWrapper>> GetAllPointageUserPerDate(@RequestParam(required = true) Map<String,String> requestMap);
-
+    @PostMapping("/EditPoinatge")
+    public ResponseEntity<String> EditPointage(@RequestBody(required = true) Map<String,String> requestMap);
 }
